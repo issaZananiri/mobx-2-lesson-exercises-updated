@@ -31,19 +31,30 @@ export class RestaurantStore {
     get restPopulation() {
         // calculate the number of people in the restaurant now
         // (e.g. total number of people who are seated, but their reservation is not complete)
+        let counter = 0
+        this.reservations.forEach(r => r.seated && !r.completed ? counter += parseInt(r.numPeople): null)
+        return counter;
     }
     get completedTables() {
         //calculate the number of tables that have been completed
+        let counter = 0
+        this.reservations.forEach(r => r.completed ? counter ++ : null)
+        return counter
     }
     addRes = (name, numPeople) => {
-        this.reservations.push(new Reservation(name, numPeople))
+        const reservation = new Reservation(name, numPeople)
+        this.reservations.push(reservation)
     }
     seatRes = (id) => {
         //find the reservation and change its seated value to true
+        const reservation = this.reservations.find(r => r.id === id)
+        reservation.seated = true
     }
     completeRes = (id) => {
         //find the reservation and mark it as completed
         //after you write this function, add some conditional rendering on compelted tables
         //e.g. strike through our a different color - this will happen on your react, not here.
+        const reservation = this.reservations.find(r => r.id === id)
+        reservation.completed = true
     }
 }
